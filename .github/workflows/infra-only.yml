@@ -1,0 +1,45 @@
+name: Infra Deploy
+
+on:
+  push:
+    branches: [main, develop, "release/*"]
+    paths:
+      - "infra/**"
+      - ".github/workflows/infra-only.yml"
+  workflow_dispatch: {}
+
+jobs:
+  deploy-infra:
+    runs-on: self-hosted
+    env:
+      KUBECONFIG: ./kubeconfig-dev.yaml
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup kubectl
+        run: echo "${{ secrets.KUBECONFIG_DEV }}" > $KUBECONFIG
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: "3.10.0"
+
+      - name: Install/Upgrade APISIX via Helm
+        run: |
+          helm repo add apisix https://charts.apiseven.com
+          helm repo update
+          helm upgrade --install apisix apisix/apisix \
+            --namespace apisix \
+            --create-namespace \
+            -f infra/k8s/platform/apisix/helm-values.yaml
+
+      - name: Apply platform (cloudflared etc.)
+        run: |
+          kubectl -n platform create secret generic cloudflared-secret \
+            --from-literal=TUNNEL_TOKEN='${{ secrets.K8S_CLOUDFLARED_TUNNEL_TOKEN }}' \
+            --dry-run=client -o yaml | kubectl apply -f -
+          kubectl apply -k infra/k8s/base
+          kubectl apply -k infra/k8s/platform

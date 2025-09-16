@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: supertokens
+  namespace: auth
+  annotations:
+    kubernetes.io/ingress.class: apisix
+spec:
+  rules:
+    - host: auth.puchi.io.vn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: supertokens
+                port:
+                  number: 3567

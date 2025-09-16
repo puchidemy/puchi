@@ -1,0 +1,87 @@
+# Binaries and build artifacts
+go-runner
+go-runner.exe
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Docker volumes and data
+/rabbitmq_data/
+/etcd_data/
+/apisix_log/
+/postgres_data/
+!/etcd_data/.keep
+!/apisix_log/.keep
+
+# Logs
+*.log
+logs/
+*.out
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-*
+.atom/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Test files
+test-route.json
+*.test.json
+
+# Build artifacts
+*.tar.gz
+*.zip
+dist/
+build/
+bin/
+
+# Go specific
+*.test
+*.prof
+go.work
+
+# Node.js (if any)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python (if any)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Backup files
+*.backup
+*.old 

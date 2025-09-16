@@ -1,0 +1,39 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: puchi-dev
+  labels:
+    name: puchi-dev
+    environment: development
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: puchi-prod
+  labels:
+    name: puchi-prod
+    environment: production
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: platform
+  labels:
+    name: platform
+    type: infrastructure
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+  labels:
+    name: monitoring
+    type: infrastructure
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: database
+  labels:
+    name: database
+    type: infrastructure

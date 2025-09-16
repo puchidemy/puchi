@@ -1,0 +1,7 @@
+[submodule "apps/frontend"]
+	path = apps/frontend
+	url = https://github.com/puchidemy/puchi-frontend.git
+[submodule "apps/services/user-service"]
+	path = apps/services/user-service
+	url = https://github.com/puchidemy/puchi-user-services.git
+

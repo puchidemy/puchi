@@ -1,0 +1,52 @@
+global:
+  imagePullPolicy: IfNotPresent
+
+gateway:
+  type: ClusterIP
+  http:
+    enabled: true
+    servicePort: 9080
+  tls:
+    enabled: true
+    servicePort: 9443
+  podAnnotations: {}
+  replicaCount: 1
+
+admin:
+  enabled: true
+  type: ClusterIP
+  servicePort: 9180
+
+ingressController:
+  enabled: true
+  config:
+    apisix:
+      serviceNamespace: apisix
+  serviceMonitor:
+    enabled: false
+
+metrics:
+  enabled: true
+
+dashboard:
+  enabled: false
+
+serviceMonitor:
+  enabled: false
+
+defaultConfig:
+  configurationSnippet: |
+    plugins:
+      - cors
+      - jwt-auth
+      - key-auth
+      - authz-keycloak
+      - openid-connect
+      - proxy-rewrite
+      - limit-count
+      - prometheus
+      - real-ip
+    nginx_config:
+      proxy_connect_timeout: 60s
+      proxy_read_timeout: 60s
+      proxy_send_timeout: 60s

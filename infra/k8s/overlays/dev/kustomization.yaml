@@ -1,0 +1,37 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+patchesStrategicMerge:
+  - frontend-patch.yaml
+  - user-service-patch.yaml
+  - database-patch.yaml
+
+configMapGenerator:
+  - name: app-config
+    literals:
+      - ENVIRONMENT=development
+      - LOG_LEVEL=debug
+      - API_URL=https://api-dev.puchi.io.vn
+
+secretGenerator:
+  - name: app-secrets
+    literals:
+      - DATABASE_URL=postgres://puchi:puchi123@postgres:5432/puchi_dev
+      - DATABASE_PASSWORD=puchi123
+      - JWT_SECRET=dev-jwt-secret-key
+      - ENCRYPTION_KEY=dev-encryption-key
+
+images:
+  - name: ghcr.io/hoan02/puchi-app/frontend
+    newTag: latest
+  - name: ghcr.io/hoan02/puchi-app/user-service
+    newTag: latest
+
+namespace: puchi-dev
+
+commonLabels:
+  environment: development
+  app.kubernetes.io/managed-by: kustomize

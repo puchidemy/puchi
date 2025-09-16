@@ -1,0 +1,89 @@
+version: "3.9"
+
+x-db-environment: &x-db-environment
+  POSTGRES_SSL_MODE: "disable"
+  POSTGRES_HOST: "db"
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: "db"
+  POSTGRES_PASSWORD: "myAwEsOm3pa55@w0rd"
+  POSTGRES_USER: "user"
+
+x-backend-app-environment: &x-backend-app-environment
+  GOMAXPROCS: "1"
+  APP_NAME: "user-service"
+  APP_VERSION: "1.0.0"
+  HTTP_PORT: "8002"
+  HTTP_USE_PREFORK_MODE: "false"
+  LOG_LEVEL: "debug"
+  PG_POOL_MAX: "2"
+  PG_URL: "postgres://user:myAwEsOm3pa55@w0rd@user-db:5432/db"
+  GRPC_PORT: "9002"
+  RMQ_RPC_SERVER: "user_rpc_server"
+  RMQ_RPC_CLIENT: "user_rpc_client"
+  RMQ_URL: "amqp://admin:admin@rabbitmq:5672/"
+  METRICS_ENABLED: "true"
+  SWAGGER_ENABLED: "true"
+
+x-rabbitmq-variables: &x-rabbitmq-variables
+  RABBITMQ_DEFAULT_USER: "admin"
+  RABBITMQ_DEFAULT_PASS: "admin"
+
+services:
+  db:
+    container_name: user-db-test
+    image: postgres:17-alpine
+    environment:
+      <<: *x-db-environment
+    volumes:
+      - db_test_data:/var/lib/postgresql/data
+    networks:
+      app_network:
+        aliases:
+          - user-db
+
+  rabbitmq:
+    container_name: user-rabbitmq-test
+    image: rabbitmq:3.13-management-alpine
+    environment:
+      <<: *x-rabbitmq-variables
+    networks:
+      app_network:
+        aliases:
+          - rabbitmq
+
+  app:
+    container_name: user-app-test
+    platform: linux/amd64
+    build:
+      context: .
+    environment:
+      <<: *x-backend-app-environment
+    depends_on:
+      - db
+      - rabbitmq
+    networks:
+      app_network:
+        aliases:
+          - user-app
+
+  integration-test:
+    container_name: integration-test
+    platform: linux/amd64
+    pid: "host"
+    build:
+      context: .
+      dockerfile: integration-test/Dockerfile
+    depends_on:
+      - app
+    networks:
+      app_network:
+        aliases:
+          - test.lvh.me
+
+networks:
+  app_network:
+    external: false
+
+volumes:
+  db_test_data:
+
