@@ -1,9 +1,9 @@
 package grpc
 
 import (
-	v1 "github.com/hoan02/puchi-user-service/internal/controller/grpc/v1"
-	"github.com/hoan02/puchi-user-service/internal/usecase"
-	"github.com/hoan02/puchi-user-service/pkg/logger"
+	v1 "github.com/puchidemy/puchi-user-services/internal/controller/grpc/v1"
+	"github.com/puchidemy/puchi-user-services/internal/usecase"
+	"github.com/puchidemy/puchi-user-services/pkg/logger"
 	pbgrpc "google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )

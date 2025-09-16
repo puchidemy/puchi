@@ -41,7 +41,7 @@ const AboutPage = () => {
                 </a>
               ),
             })}
-           </p>
+          </p>
         </CardContent>
       </Card>
     </div>

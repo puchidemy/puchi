@@ -8,4 +8,4 @@ spec:
     spec:
       containers:
         - name: puchi-fe
-          image: ghcr.io/hoan02/puchi-frontend:dev
+          image: ghcr.io/puchidemy/puchi-frontend:dev

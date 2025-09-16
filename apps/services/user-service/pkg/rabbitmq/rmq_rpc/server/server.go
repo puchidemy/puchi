@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/goccy/go-json"
-	"github.com/hoan02/puchi-user-service/pkg/logger"
-	rmqrpc "github.com/hoan02/puchi-user-service/pkg/rabbitmq/rmq_rpc"
+	"github.com/puchidemy/puchi-user-services/pkg/logger"
+	rmqrpc "github.com/puchidemy/puchi-user-services/pkg/rabbitmq/rmq_rpc"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 

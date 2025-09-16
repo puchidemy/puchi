@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	translator "github.com/Conight/go-googletrans"
-	"github.com/hoan02/puchi-user-service/internal/entity"
+	"github.com/puchidemy/puchi-user-services/internal/entity"
 )
 
 // TranslationWebAPI -.

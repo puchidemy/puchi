@@ -1,8 +1,8 @@
 package response
 
 import (
-	v1 "github.com/hoan02/puchi-user-service/docs/proto/v1"
-	"github.com/hoan02/puchi-user-service/internal/entity"
+	v1 "github.com/puchidemy/puchi-user-services/docs/proto/v1"
+	"github.com/puchidemy/puchi-user-services/internal/entity"
 )
 
 // NewTranslationHistory -.

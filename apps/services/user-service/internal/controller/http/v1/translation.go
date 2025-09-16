@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/hoan02/puchi-user-service/internal/controller/http/v1/request"
-	"github.com/hoan02/puchi-user-service/internal/entity"
+	"github.com/puchidemy/puchi-user-services/internal/controller/http/v1/request"
+	"github.com/puchidemy/puchi-user-services/internal/entity"
 )
 
 // @Summary     Show history

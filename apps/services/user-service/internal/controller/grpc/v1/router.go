@@ -2,9 +2,9 @@ package v1
 
 import (
 	"github.com/go-playground/validator/v10"
-	v1 "github.com/hoan02/puchi-user-service/docs/proto/v1"
-	"github.com/hoan02/puchi-user-service/internal/usecase"
-	"github.com/hoan02/puchi-user-service/pkg/logger"
+	v1 "github.com/puchidemy/puchi-user-services/docs/proto/v1"
+	"github.com/puchidemy/puchi-user-services/internal/usecase"
+	"github.com/puchidemy/puchi-user-services/pkg/logger"
 	pbgrpc "google.golang.org/grpc"
 )
 

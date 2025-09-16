@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hoan02/puchi-user-service/pkg/rabbitmq/rmq_rpc/server"
+	"github.com/puchidemy/puchi-user-services/pkg/rabbitmq/rmq_rpc/server"
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 

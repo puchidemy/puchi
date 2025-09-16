@@ -1,4 +1,4 @@
-module github.com/hoan02/puchi-user-service
+module github.com/puchidemy/puchi-user-services
 
 go 1.24
 

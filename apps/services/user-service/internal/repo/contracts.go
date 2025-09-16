@@ -4,7 +4,7 @@ package repo
 import (
 	"context"
 
-	"github.com/hoan02/puchi-user-service/internal/entity"
+	"github.com/puchidemy/puchi-user-services/internal/entity"
 )
 
 //go:generate mockgen -source=contracts.go -destination=../usecase/mocks_repo_test.go -package=usecase_test

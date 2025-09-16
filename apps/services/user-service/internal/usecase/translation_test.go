@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/hoan02/puchi-user-service/internal/entity"
-	"github.com/hoan02/puchi-user-service/internal/usecase/translation"
+	"github.com/puchidemy/puchi-user-services/internal/entity"
+	"github.com/puchidemy/puchi-user-services/internal/usecase/translation"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 )

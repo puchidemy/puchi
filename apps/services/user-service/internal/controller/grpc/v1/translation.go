@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	v1 "github.com/hoan02/puchi-user-service/docs/proto/v1"
-	"github.com/hoan02/puchi-user-service/internal/controller/grpc/v1/response"
+	v1 "github.com/puchidemy/puchi-user-services/docs/proto/v1"
+	"github.com/puchidemy/puchi-user-services/internal/controller/grpc/v1/response"
 )
 
 func (r *V1) GetHistory(ctx context.Context, _ *v1.GetHistoryRequest) (*v1.GetHistoryResponse, error) {

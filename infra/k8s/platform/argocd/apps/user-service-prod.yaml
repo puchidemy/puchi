@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
     namespace: puchi-prod
   source:
-    repoURL: https://github.com/hoan02/puchi-user-service.git
+    repoURL: https://github.com/puchidemy/puchi-user-services.git
     targetRevision: main
     path: charts/user-service
     helm:

@@ -20,7 +20,7 @@ spec:
           effect: "NoSchedule"
       containers:
         - name: puchi-fe
-          image: ghcr.io/hoan02/puchi-frontend:latest
+          image: ghcr.io/puchidemy/puchi-frontend:latest
           ports:
             - containerPort: 3000
           env:

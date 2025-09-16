@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/goccy/go-json"
-	protov1 "github.com/hoan02/puchi-user-service/docs/proto/v1"
+	protov1 "github.com/puchidemy/puchi-user-services/docs/proto/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

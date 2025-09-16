@@ -1,10 +1,10 @@
 package v1
 
 import (
-	v1 "github.com/hoan02/puchi-user-service/internal/controller/amqp_rpc/v1"
-	"github.com/hoan02/puchi-user-service/internal/usecase"
-	"github.com/hoan02/puchi-user-service/pkg/logger"
-	"github.com/hoan02/puchi-user-service/pkg/rabbitmq/rmq_rpc/server"
+	v1 "github.com/puchidemy/puchi-user-services/internal/controller/amqp_rpc/v1"
+	"github.com/puchidemy/puchi-user-services/internal/usecase"
+	"github.com/puchidemy/puchi-user-services/pkg/logger"
+	"github.com/puchidemy/puchi-user-services/pkg/rabbitmq/rmq_rpc/server"
 )
 
 // NewRouter -.

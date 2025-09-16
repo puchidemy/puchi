@@ -7,12 +7,12 @@ import (
 	"github.com/ansrivas/fiberprometheus/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/swagger"
-	"github.com/hoan02/puchi-user-service/config"
-	_ "github.com/hoan02/puchi-user-service/docs" // Swagger docs.
-	"github.com/hoan02/puchi-user-service/internal/controller/http/middleware"
-	v1 "github.com/hoan02/puchi-user-service/internal/controller/http/v1"
-	"github.com/hoan02/puchi-user-service/internal/usecase"
-	"github.com/hoan02/puchi-user-service/pkg/logger"
+	"github.com/puchidemy/puchi-user-services/config"
+	_ "github.com/puchidemy/puchi-user-services/docs" // Swagger docs.
+	"github.com/puchidemy/puchi-user-services/internal/controller/http/middleware"
+	v1 "github.com/puchidemy/puchi-user-services/internal/controller/http/v1"
+	"github.com/puchidemy/puchi-user-services/internal/usecase"
+	"github.com/puchidemy/puchi-user-services/pkg/logger"
 )
 
 // NewRouter -.

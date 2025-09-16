@@ -4,7 +4,7 @@ package usecase
 import (
 	"context"
 
-	"github.com/hoan02/puchi-user-service/internal/entity"
+	"github.com/puchidemy/puchi-user-services/internal/entity"
 )
 
 //go:generate mockgen -source=interfaces.go -destination=./mocks_usecase_test.go -package=usecase_test

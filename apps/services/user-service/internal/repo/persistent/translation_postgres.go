@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hoan02/puchi-user-service/internal/entity"
-	"github.com/hoan02/puchi-user-service/pkg/postgres"
+	"github.com/puchidemy/puchi-user-services/internal/entity"
+	"github.com/puchidemy/puchi-user-services/pkg/postgres"
 )
 
 const _defaultEntityCap = 64

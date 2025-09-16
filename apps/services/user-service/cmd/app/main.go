@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/hoan02/puchi-user-service/config"
-	"github.com/hoan02/puchi-user-service/internal/app"
+	"github.com/puchidemy/puchi-user-services/config"
+	"github.com/puchidemy/puchi-user-services/internal/app"
 )
 
 func main() {

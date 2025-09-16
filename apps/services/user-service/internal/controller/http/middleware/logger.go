@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/hoan02/puchi-user-service/pkg/logger"
+	"github.com/puchidemy/puchi-user-services/pkg/logger"
 )
 
 func buildRequestMessage(ctx *fiber.Ctx) string {
