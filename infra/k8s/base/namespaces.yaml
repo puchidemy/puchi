@@ -2,17 +2,9 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: puchi-dev
+  name: puchi
   labels:
-    name: puchi-dev
-    environment: development
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: puchi-prod
-  labels:
-    name: puchi-prod
-    environment: production
+    name: puchi
 ---
 apiVersion: v1
 kind: Namespace

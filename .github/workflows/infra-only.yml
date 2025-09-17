@@ -12,7 +12,7 @@ jobs:
   deploy-infra:
     runs-on: self-hosted
     env:
-      KUBECONFIG: ./kubeconfig-dev.yaml
+      KUBECONFIG: ./kubeconfig.yaml
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,7 +20,7 @@ jobs:
           submodules: recursive
 
       - name: Setup kubectl
-        run: echo "${{ secrets.KUBECONFIG_DEV }}" > $KUBECONFIG
+        run: echo "${{ secrets.KUBECONFIG }}" > $KUBECONFIG
 
       - name: Setup Helm
         uses: azure/setup-helm@v3
