@@ -29,6 +29,13 @@ jobs:
 
       - name: Deploy APISIX from vendored manifests (no Helm)
         run: |
+          echo "[DEBUG] PWD: $(pwd)"
+          echo "[DEBUG] Branch: $(git branch --show-current || true)"
+          echo "[DEBUG] Commit: $(git rev-parse HEAD || true)"
+          echo "[DEBUG] List infra/k8s/platform:" && ls -la infra/k8s/platform || true
+          echo "[DEBUG] List infra/k8s/platform/apisix:" && ls -la infra/k8s/platform/apisix || true
+          echo "[DEBUG] git ls-files for rendered.yaml:" && git ls-files infra/k8s/platform/apisix/rendered.yaml || true
+          echo "[DEBUG] git status (short):" && git status --porcelain || true
           if [ ! -f infra/k8s/platform/apisix/rendered.yaml ]; then
             echo "Missing infra/k8s/platform/apisix/rendered.yaml. Please vendor manifests via 'helm template' locally and commit." >&2
             exit 1
@@ -53,4 +60,3 @@ jobs:
             TUNNEL_TOKEN: "${TUNNEL_TOKEN}"
           EOF
           kubectl apply -k infra/k8s/platform
-          
