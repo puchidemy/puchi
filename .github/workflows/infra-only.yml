@@ -41,8 +41,9 @@ jobs:
         env:
           TUNNEL_TOKEN: ${{ secrets.K8S_CLOUDFLARED_TUNNEL_TOKEN }}
         run: |
+          kubectl apply -k infra/k8s/base
+          kubectl get ns platform >/dev/null 2>&1 || kubectl create ns platform
           kubectl -n platform create secret generic cloudflared-secret \
             --from-literal=TUNNEL_TOKEN="$TUNNEL_TOKEN" \
             --dry-run=client -o yaml | kubectl apply -f -
-          kubectl apply -k infra/k8s/base
           kubectl apply -k infra/k8s/platform
