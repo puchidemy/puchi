@@ -2,7 +2,7 @@ apiVersion: apisix.apache.org/v2
 kind: ApisixPluginConfig
 metadata:
   name: oidc-auth
-  namespace: puchi-dev
+  namespace: puchi
 spec:
   plugins:
     - name: cors
