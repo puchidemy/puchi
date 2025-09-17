@@ -22,6 +22,20 @@ jobs:
       - name: Setup kubectl
         run: echo "${{ secrets.KUBECONFIG }}" > $KUBECONFIG
 
+      - name: Ensure unzip is installed
+        run: |
+          if command -v unzip >/dev/null 2>&1; then
+            echo "unzip already installed"
+          elif command -v apt-get >/dev/null 2>&1; then
+            sudo apt-get update && sudo apt-get install -y unzip
+          elif command -v yum >/dev/null 2>&1; then
+            sudo yum install -y unzip
+          elif command -v apk >/dev/null 2>&1; then
+            sudo apk add --no-cache unzip
+          else
+            echo "Package manager not detected; please install unzip on the runner" && exit 1
+          fi
+
       - name: Setup Helm
         uses: azure/setup-helm@v3
         with:
