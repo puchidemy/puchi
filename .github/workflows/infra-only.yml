@@ -32,6 +32,9 @@ jobs:
         run: |
           helm repo add apisix https://charts.apiseven.com
           helm repo update
+          # Cleanup legacy standalone ingress-controller (avoid Helm ownership conflict)
+          helm uninstall apisix-ingress-controller -n apisix || true
+          kubectl -n apisix delete deploy,svc,sa,cm,role,rolebinding,clusterrole,clusterrolebinding -l app.kubernetes.io/name=apisix-ingress-controller --ignore-not-found
           helm upgrade --install apisix apisix/apisix \
             --namespace apisix \
             --create-namespace \
