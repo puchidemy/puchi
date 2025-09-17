@@ -53,3 +53,4 @@ jobs:
             TUNNEL_TOKEN: "${TUNNEL_TOKEN}"
           EOF
           kubectl apply -k infra/k8s/platform
+          
