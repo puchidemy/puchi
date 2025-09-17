@@ -14,7 +14,6 @@ metadata:
     name: platform
     type: infrastructure
 ---
-## monitoring, database, argocd removed
 apiVersion: v1
 kind: Namespace
 metadata:
