@@ -12,7 +12,7 @@ jobs:
   deploy-infra:
     runs-on: self-hosted
     env:
-      KUBECONFIG: ./kubeconfig.yaml
+      KUBECONFIG: /home/anony/.kube/config.yaml
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,20 +20,26 @@ jobs:
           submodules: recursive
 
       - name: Setup kubectl
-        run: echo "${{ secrets.KUBECONFIG }}" > $KUBECONFIG
+        run: |
+          if [ -f "$KUBECONFIG" ]; then echo "Using host kubeconfig at $KUBECONFIG"; else echo "KUBECONFIG not found at $KUBECONFIG" >&2; exit 1; fi
 
       - name: Ensure unzip is installed
         run: |
           if command -v unzip >/dev/null 2>&1; then
             echo "unzip already installed"
-          elif command -v apt-get >/dev/null 2>&1; then
-            sudo apt-get update && sudo apt-get install -y unzip
+            exit 0
+          fi
+          if [ "$(id -u)" -eq 0 ]; then SUDO=""; else SUDO="sudo -n"; fi
+          if command -v apt-get >/dev/null 2>&1; then
+            ${SUDO} apt-get update -y
+            DEBIAN_FRONTEND=noninteractive ${SUDO} apt-get install -y unzip
           elif command -v yum >/dev/null 2>&1; then
-            sudo yum install -y unzip
+            ${SUDO} yum install -y unzip
           elif command -v apk >/dev/null 2>&1; then
-            sudo apk add --no-cache unzip
+            ${SUDO} apk add --no-cache unzip
           else
-            echo "Package manager not detected; please install unzip on the runner" && exit 1
+            echo "Package manager not detected; please install unzip on the runner" >&2
+            exit 1
           fi
 
       - name: Setup Helm
