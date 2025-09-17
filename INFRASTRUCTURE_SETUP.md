@@ -1,5 +1,38 @@
 # 🏗️ Infrastructure Setup Guide
 
+## Accessing APISIX
+
+### APISIX (Admin API)
+
+Verify components:
+
+```bash
+kubectl -n apisix get pods
+kubectl -n apisix get svc
+```
+
+Port-forward the Admin API:
+
+```bash
+kubectl -n apisix port-forward svc/apisix-admin 9180:9180
+```
+
+Fetch the admin API key and test:
+
+```bash
+APISIX_KEY=$(kubectl -n apisix get secret apisix -o jsonpath='{.data.admin.key}' | base64 -d)
+curl -s http://127.0.0.1:9180/apisix/admin/routes -H "X-API-KEY: ${APISIX_KEY}"
+```
+
+Notes:
+
+- If you enabled APISIX Ingress Controller, Kubernetes Ingress resources will be reconciled automatically.
+- Admin API should be secured and not exposed publicly. Use port-forward or a restricted network path only.
+
+Troubleshooting:
+
+- If APISIX CRDs are missing, ensure the Helm steps installed both APISIX and the APISIX Ingress Controller before applying platform manifests.
+
 ## Overview
 
 This document outlines the complete infrastructure setup for the Puchi platform, including CI/CD pipelines, Kubernetes configurations, and development tools.

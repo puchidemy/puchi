@@ -37,3 +37,11 @@ metadata:
   labels:
     name: argocd
     type: infrastructure
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: auth
+  labels:
+    name: auth
+    type: platform

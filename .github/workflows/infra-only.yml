@@ -35,10 +35,11 @@ jobs:
           helm upgrade --install apisix apisix/apisix \
             --namespace apisix \
             --create-namespace \
-            -f infra/k8s/platform/apisix/helm-values.yaml
-          helm upgrade --install apisix-ingress-controller apisix/apisix-ingress-controller \
-            --namespace apisix \
-            --create-namespace
+            -f infra/k8s/platform/apisix/helm-values.yaml \
+            --set dashboard.enabled=true \
+            --set ingress-controller.enabled=true \
+            --set ingress-controller.config.apisix.serviceNamespace=apisix
+          kubectl wait --for=condition=Established crd/apisixpluginconfigs.apisix.apache.org --timeout=180s || true
 
       - name: Apply platform (cloudflared etc.)
         env:
