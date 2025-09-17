@@ -23,26 +23,18 @@ jobs:
         run: |
           if [ -f "$KUBECONFIG" ]; then echo "Using host kubeconfig at $KUBECONFIG"; else echo "KUBECONFIG not found at $KUBECONFIG" >&2; exit 1; fi
 
-      - name: Setup Helm
-        uses: azure/setup-helm@v4
-        with:
-          version: "3.14.4"
-
-      - name: Install/Upgrade APISIX via Helm
+      - name: Apply base (namespaces, policies, quotas)
         run: |
-          helm repo add apisix https://charts.apiseven.com
-          helm repo update
-          # Cleanup legacy standalone ingress-controller (avoid Helm ownership conflict)
-          helm uninstall apisix-ingress-controller -n apisix || true
-          kubectl -n apisix delete deploy,svc,sa,cm,role,rolebinding,clusterrole,clusterrolebinding -l app.kubernetes.io/name=apisix-ingress-controller --ignore-not-found
-          helm upgrade --install apisix apisix/apisix \
-            --namespace apisix \
-            --create-namespace \
-            -f infra/k8s/platform/apisix/helm-values.yaml \
-            --set dashboard.enabled=true \
-            --set ingress-controller.enabled=true \
-            --set ingress-controller.config.apisix.serviceNamespace=apisix
-          kubectl wait --for=condition=Established crd/apisixpluginconfigs.apisix.apache.org --timeout=180s || true
+          kubectl apply -k infra/k8s/base
+
+      - name: Deploy APISIX from vendored manifests (no Helm)
+        run: |
+          if [ ! -f infra/k8s/platform/apisix/rendered.yaml ]; then
+            echo "Missing infra/k8s/platform/apisix/rendered.yaml. Please vendor manifests via 'helm template' locally and commit." >&2
+            exit 1
+          fi
+          kubectl get ns apisix >/dev/null 2>&1 || kubectl create ns apisix
+          kubectl apply -f infra/k8s/platform/apisix/rendered.yaml
 
       - name: Apply platform (cloudflared etc.)
         env:
