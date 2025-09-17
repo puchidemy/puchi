@@ -29,3 +29,11 @@ metadata:
   labels:
     name: database
     type: infrastructure
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: argocd
+  labels:
+    name: argocd
+    type: infrastructure

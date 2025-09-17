@@ -36,6 +36,9 @@ jobs:
             --namespace apisix \
             --create-namespace \
             -f infra/k8s/platform/apisix/helm-values.yaml
+          helm upgrade --install apisix-ingress-controller apisix/apisix-ingress-controller \
+            --namespace apisix \
+            --create-namespace
 
       - name: Apply platform (cloudflared etc.)
         env:
