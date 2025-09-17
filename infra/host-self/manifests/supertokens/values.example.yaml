@@ -1,0 +1,13 @@
+# SuperTokens Helm values example
+# Copy to values.yaml and adjust for your environment
+
+service:
+  type: ClusterIP
+  port: 3567
+
+env:
+  SUPERTOKENS_POSTGRESQL_CONNECTION_URI: "postgresql://USER:PASSWORD@DB_HOST:5432/supertokens"
+  SUPERTOKENS_APP_NAME: "Puchi"
+  SUPERTOKENS_API_DOMAIN: "auth.puchi.io.vn"
+  SUPERTOKENS_WEBSITE_DOMAIN: "puchi.io.vn"
+# Add other SuperTokens configuration as needed

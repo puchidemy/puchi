@@ -1,6 +1,0 @@
-apiVersion: v2
-name: go-service
-description: Reusable Helm chart for Go microservices (Deployment/Service/Ingress/HPA)
-type: application
-version: 0.1.0
-appVersion: "0.1.0"
