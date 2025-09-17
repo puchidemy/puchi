@@ -5,10 +5,23 @@ namespace: argocd
 
 resources:
   - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-  - argocd-cm.yaml
-  - argocd-rbac-cm.yaml
-patchesStrategicMerge:
-  - patch-argocd-server.yaml
+patches:
+  - path: patch-argocd-server.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: argocd-server
+  - path: patch-argocd-cm.yaml
+    target:
+      version: v1
+      kind: ConfigMap
+      name: argocd-cm
+  - path: patch-argocd-rbac-cm.yaml
+    target:
+      version: v1
+      kind: ConfigMap
+      name: argocd-rbac-cm
 
 commonLabels:
   app.kubernetes.io/part-of: puchi-platform
