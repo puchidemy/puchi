@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - apisix/
   - cloudflared/
-  - argocd/
 
 commonLabels:
   app.kubernetes.io/part-of: puchi-platform
