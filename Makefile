@@ -1,9 +1,8 @@
 # 🏗️ Puchi Platform - Build Automation
-# Modern microservices-based language learning platform
+# Modern microservices-based language learning platform (self-host)
 
 .PHONY: help init update clean build test lint format security-scan
-.PHONY: dev-start dev-stop deploy-dev deploy-prod argocd-install argocd-sync argocd-status
-.PHONY: rollback status logs apisix-apply docs-serve
+.PHONY: dev-start dev-stop host-bootstrap host-base host-cloudflared host-apisix host-supertokens host-verify
 
 # Default target
 .DEFAULT_GOAL := help
@@ -42,13 +41,12 @@ clean: ## Clean build artifacts and temporary files
 
 ##@ Development
 
-dev-start: ## Start development environment with Tilt
+dev-start: ## Start development environment (Tilt not required; optional)
 	@echo "$(GREEN)🚀 Starting development environment...$(NC)"
-	tilt up
+	@echo "$(YELLOW)Tip: Use local Docker builds and deploy on host via infra/host-self scripts.$(NC)"
 
 dev-stop: ## Stop development environment
 	@echo "$(YELLOW)🛑 Stopping development environment...$(NC)"
-	tilt down
 
 build: ## Build all services
 	@echo "$(BLUE)🔨 Building all services...$(NC)"
@@ -95,63 +93,30 @@ security-scan: ## Run security scans
 	docker run --rm -v $(PWD):/app aquasec/trivy fs /app
 	@echo "$(GREEN)✅ Security scan completed$(NC)"
 
-##@ Deployment
+##@ Self-Host (Infra)
 
-deploy-dev: ## Deploy to development environment
-	@echo "$(GREEN)🚀 Deploying to development...$(NC)"
-	kubectl apply -k infra/k8s/overlays/dev
-	kubectl rollout status deployment/puchi-fe -n puchi-dev
-	@echo "$(GREEN)✅ Development deployment completed$(NC)"
+host-bootstrap: ## Install k0s + kubeconfig + helm on host
+	chmod +x infra/host-self/scripts/*.sh
+	infra/host-self/scripts/bootstrap-k0s.sh
 
-deploy-prod: ## Deploy to production environment
-	@echo "$(RED)⚠️  Deploying to PRODUCTION...$(NC)"
-	@read -p "Are you sure? [y/N]: " confirm && [ "$$confirm" = "y" ]
-	kubectl apply -k infra/k8s/overlays/prod
-	kubectl rollout status deployment/puchi-fe -n puchi-prod
-	@echo "$(GREEN)✅ Production deployment completed$(NC)"
+host-base: ## Apply base namespaces/policies/quotas
+	kubectl apply -k infra/host-self/manifests/base
 
-argocd-install: ## Install/Upgrade Argo CD and applications
-	@echo "$(GREEN)🚀 Installing Argo CD...$(NC)"
-	kubectl apply -k infra/k8s/platform/argocd
-	@echo "$(GREEN)✅ Argo CD applied$(NC)"
+host-cloudflared: ## Deploy Cloudflared (requires TUNNEL_TOKEN)
+	@if [ -z "$$TUNNEL_TOKEN" ]; then echo "TUNNEL_TOKEN not set" >&2; exit 1; fi
+	infra/host-self/scripts/deploy-cloudflared.sh
 
-argocd-sync: ## Force sync all Argo CD applications
-	@echo "$(GREEN)🔄 Syncing Argo CD apps...$(NC)"
-	kubectl -n argocd rollout status deploy/argocd-server --timeout=120s || true
-	kubectl -n argocd rollout status deploy/argocd-repo-server --timeout=120s || true
-	kubectl -n argocd rollout status deploy/argocd-application-controller --timeout=120s || true
-	kubectl -n argocd get applications -o name | ForEach-Object { kubectl -n argocd patch $_ -p '{"spec":{"syncPolicy":{"automated":{"prune":true,"selfHeal":true}}}}' --type merge }
-	@echo "$(GREEN)✅ Sync requested$(NC)"
+host-apisix: ## Deploy APISIX (Gateway + Ingress Controller)
+	infra/host-self/scripts/deploy-apisix.sh
 
-argocd-status: ## Show Argo CD applications status
-	@echo "$(GREEN)📊 Argo CD apps status$(NC)"
-	kubectl -n argocd get applications
+host-supertokens: ## Deploy SuperTokens (requires ST_DB_URI, CHART_PATH)
+	@if [ -z "$$ST_DB_URI" ] || [ -z "$$CHART_PATH" ]; then echo "ST_DB_URI or CHART_PATH not set" >&2; exit 1; fi
+	infra/host-self/scripts/deploy-supertokens.sh
 
-rollback: ## Rollback deployment (usage: make rollback ENV=dev VERSION=v1.0.0)
-	@echo "$(YELLOW)⏪ Rolling back deployment in $(ENV) to $(VERSION)...$(NC)"
-	kubectl rollout undo deployment/puchi-fe -n puchi-$(ENV)
-	kubectl rollout status deployment/puchi-fe -n puchi-$(ENV)
-	@echo "$(GREEN)✅ Rollback completed$(NC)"
-
-##@ Monitoring & Operations
-
-status: ## Check deployment status
-	@echo "$(BLUE)📊 Checking deployment status...$(NC)"
-	@echo "\n$(YELLOW)=== Development ===$(NC)"
-	kubectl get pods -n puchi-dev
-	@echo "\n$(YELLOW)=== Staging ===$(NC)"
-	kubectl get pods -n puchi-staging
-	@echo "\n$(YELLOW)=== Production ===$(NC)"
-	kubectl get pods -n puchi-prod
-
-logs: ## Show logs (usage: make logs ENV=dev SERVICE=puchi-fe)
-	@echo "$(BLUE)📋 Showing logs for $(SERVICE) in $(ENV)...$(NC)"
-	kubectl logs -f deployment/$(SERVICE) -n puchi-$(ENV)
-
-apisix-apply: ## Apply APISIX configurations
-	@echo "$(BLUE)🛡️ Applying APISIX configurations...$(NC)"
-	kubectl -n platform apply -f infra/k8s/platform/apisix/route/
-	@echo "$(GREEN)✅ APISIX configurations applied$(NC)"
+host-verify: ## Verify core namespaces and services
+	kubectl -n platform get pods,svc || true
+	kubectl -n apisix get pods,svc || true
+	kubectl -n auth get pods,svc || true
 
 ##@ Documentation
 

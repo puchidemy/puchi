@@ -338,6 +338,8 @@ kubectl exec -it pod-name -n puchi-dev -- /bin/sh
 kubectl port-forward service/user-service 8080:80 -n puchi-dev
 ```
 
+> Note: The commands above reference a legacy multi-environment setup (`puchi-dev`). For the current self-host model, see `infra/host-self/README.md` and use namespaces `platform`, `apisix`, and `auth` where applicable.
+
 ## Common Commands
 
 ### Make Commands
