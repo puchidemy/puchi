@@ -33,23 +33,4 @@ spec:
           port: 80
         - protocol: TCP
           port: 443
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-database-access
-  namespace: database
-spec:
-  podSelector:
-    matchLabels:
-      app: postgres
-  policyTypes:
-    - Ingress
-  ingress:
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              name: puchi
-      ports:
-        - protocol: TCP
-          port: 5432
+## database policy removed

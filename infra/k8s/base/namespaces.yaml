@@ -14,30 +14,7 @@ metadata:
     name: platform
     type: infrastructure
 ---
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: monitoring
-  labels:
-    name: monitoring
-    type: infrastructure
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: database
-  labels:
-    name: database
-    type: infrastructure
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: argocd
-  labels:
-    name: argocd
-    type: infrastructure
----
+## monitoring, database, argocd removed
 apiVersion: v1
 kind: Namespace
 metadata:
