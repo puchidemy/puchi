@@ -50,3 +50,12 @@ defaultConfig:
       proxy_connect_timeout: 60s
       proxy_read_timeout: 60s
       proxy_send_timeout: 60s
+
+# Ensure embedded etcd works in single-node and MY_POD_NAME is set for advertised URLs
+etcd:
+  replicaCount: 1
+  extraEnvVars:
+    - name: MY_POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
